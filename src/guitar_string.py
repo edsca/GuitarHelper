@@ -2,10 +2,11 @@ note_reference = ['A','A#/Bb','B','C','C#/Db','D','D#/Eb','E','F','F#/Gb','G','G
 
 class GuitarString:
     #A guitar String maps a position on a fretboard to a note value
-    def __init__(self,tuning,number_of_frets):
+    def __init__(self,tuning,number_of_frets,string_number):
         self.number_of_frets = number_of_frets
         self.tuning = tuning
         self.notes = self.tune(self.tuning)
+        self.string_number = string_number
 
     # function that allows you to tune/retune a string
     def tune(self,new_tuning):

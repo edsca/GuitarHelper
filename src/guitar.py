@@ -7,10 +7,17 @@ class Guitar:
         self.is_lefty = is_lefty
         string_order = tuning.reverse()
         for note in tuning:
-            self.strings.append(GuitarString(note,number_of_frets))
+            self.strings.append(GuitarString(note,number_of_frets,tuning.index(note)+1))
 
     def on_string(self,string_number): #informal getter function for string
         return self.strings[string_number-1]
+
+    def find_note(self,note):
+        location_list = []
+        for string in self.strings:
+            if note in string.notes:
+                location_list.append((string.string_number,string.notes.index(note)))
+        return location_list
 
     def display_fretboard(self):
         if self.is_lefty:
