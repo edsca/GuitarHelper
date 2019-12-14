@@ -11,15 +11,23 @@ class GuitarString:
     def tune(self,new_tuning):
         #determine the order of notes
         global note_reference
-        n = note_reference.index(new_tuning)
-        tuned_string = note_reference[n:] + note_reference[:n]
+        n = note_reference.index(new_tuning[0])
+        current_octave = new_tuning[1]
+        #get to the end of the starting octave
+        notes = []
+        for note in note_reference[n:]:
+            notes.append((note,current_octave))
+        remaining_fretboard = self.number_of_frets - len(notes)
 
-        #extend to fill the rest of the fretboard
-        fulls,remainder = divmod(self.number_of_frets,len(note_reference))
-        notes  = []
+        #compute how many full octaves we can fit on the fretboard and how much 'hangs over'
+        fulls,remainder = divmod(remaining_fretboard,len(note_reference))
+        # for each complete octave add to our note lists
+        current_octave += 1
         for i in range(fulls):
-            notes.extend(tuned_string)
-        notes.extend(tuned_string[:remainder])
+            notes.extend([(n,current_octave) for n in note_reference])
+            current_octave += 1
+        # add the little thing that hangs over the edge.
+        notes.extend([(n,current_octave) for n in note_reference[:n]])
         return notes
 
     def fret(self,position):
