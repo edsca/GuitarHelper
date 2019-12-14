@@ -22,7 +22,7 @@ class Guitar:
     def display_fretboard(self):
         if self.is_lefty:
             for string in self.strings:
-                print(string.notes[::-1])
+                print(string.notes[::-1]) #flip board to increase pitch right to left.
         else:
             for string in self.strings:
                 print(string.notes)
