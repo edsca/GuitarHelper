@@ -19,10 +19,10 @@ class Guitar:
                 location_list.append((string.string_number,string.notes.index(note)))
         return location_list
 
-    def display_fretboard(self):
+    def fretboard(self):
         if self.is_lefty:
             for string in self.strings:
-                print(string.notes[::-1]) #flip board to increase pitch right to left.
+                return string.notes[::-1] #flip board to increase pitch right to left.
         else:
             for string in self.strings:
-                print(string.notes)
+                return string.notes

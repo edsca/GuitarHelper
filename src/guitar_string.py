@@ -1,4 +1,6 @@
-note_reference = ['A','A#/Bb','B','C','C#/Db','D','D#/Eb','E','F','F#/Gb','G','G#/Ab']
+#note_reference = ['A','A#','B','C','C#','D','D#','E','F','F#','G','G#']
+from common import TwelveTET as note_reference
+
 
 class GuitarString:
     #A guitar String maps a position on a fretboard to a note value
