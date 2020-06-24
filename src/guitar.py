@@ -8,6 +8,7 @@ class Guitar:
         string_order = tuning.reverse()
         for note in tuning:
             self.strings.append(GuitarString(note,number_of_frets,tuning.index(note)+1))
+        self.assign_fret_markers(number_of_frets)
 
     def on_string(self,string_number): #informal getter function for string
         return self.strings[string_number-1]
@@ -19,10 +20,18 @@ class Guitar:
                 location_list.append((string.string_number,string.notes.index(note)))
         return location_list
 
-    def fretboard(self):
+
+    def assign_fret_markers(self,frets):
+        self.fret_markers = []
+        for i in range(frets):
+            print(i)
+            if i in [12,24]:
+                self.fret_markers.append("oo")
+            elif i in [3,5,7,9,15,17,19,21]:
+                self.fret_markers.append("o")
+            elif i == 0:
+                self.fret_markers.append("|")
+            else:
+                self.fret_markers.append(" ")
         if self.is_lefty:
-            for string in self.strings:
-                return string.notes[::-1] #flip board to increase pitch right to left.
-        else:
-            for string in self.strings:
-                return string.notes
+            self.fret_markers = self.fret_markers[::-1]
