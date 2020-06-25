@@ -20,17 +20,17 @@ TriadTable = [
 
 ExtensionTable = [
     ("b9",1),
-    ("add9", 2),
+    ("9", 2),
     ("m",3),
     ("M",4),
-    ("add11",5),
+    ("11",5),
     ("#11",6),
     ("b5",6),
     ("#5",8),
     ("b6",8),
     ("b13",8),
-    ("add6",9),
-    ("add13",9),
+    ("6",9),
+    ("13",9),
     ("dim7",9),
     ("7", 10),
     ("M7", 11)
@@ -39,14 +39,21 @@ ExtensionTable = [
 
 #############   Classes     ############
 class Chord:
-    def __init__(self,root,triad_type, *argv):
+    def __init__(self,root,triad_type, **kwargs):
         global TwelveTET
         self.TwelveTET=TwelveTET+TwelveTET
         self.root = root
         self.notes = []
         self.add_triad(triad_type)
         print(self.notes)
-        self.add_extensions(*argv)
+
+        for key, value in kwargs.items():
+            if key=='extensions':
+                print('made it')
+                self.add_extensions(value)
+
+
+
         print(self.notes)
 
     def add_triad(self,triad_type):
@@ -62,15 +69,15 @@ class Chord:
             n+=interval
             self.notes.append(self.TwelveTET[n])
 
-    def add_extensions(self,*argv):
+    def add_extensions(self,extensions):
         global ExtensionTable
 
         try:
-            intervals = [entry[1] for entry in ExtensionTable if entry[0] in argv]
+            intervals = [entry[1] for entry in ExtensionTable if entry[0] in extensions]
         except:
             print("error occured")
             intervals = []
-        print(argv)
+        print(extensions)
         print(intervals)
         for interval in intervals:
             n = self.TwelveTET.index(self.root)
