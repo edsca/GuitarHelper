@@ -2,14 +2,15 @@
 ########## PRIMATIVES #############
 TwelveTET = ['A','A#','B','C','C#','D','D#','E','F','F#','G','G#']
 
-ScaleTable = [
-    ("Major",[2,2,1,2,2,2,1]),
-    ("Blues",[3,2,1,1,3,2]),
-    ("Natural Minor", [2,1,2,2,1,2,2]),
-    ("Minor Pentatonic", [3,2,2,3,2])
+SCALETABLE = [
+    ("Root",[]),
+    ("Major",[2,2,1,2,2,2]),
+    ("Blues",[3,2,1,1,3]),
+    ("Natural Minor", [2,1,2,2,1,2]),
+    ("Minor Pentatonic", [3,2,2,3])
 ]
 
-TriadTable = [
+TRIADTABLE = [
     ("Major", [4,3]),
     ("Augmented",[4,4]),
     ("Minor",[3,4]),
@@ -18,7 +19,7 @@ TriadTable = [
     ("Suspended 2", [2,5])
 ]
 
-ExtensionTable = [
+EXTENSIONTABLE = [
     ("b9",1),
     ("9", 2),
     ("m",3),
@@ -45,11 +46,9 @@ class Chord:
         self.root = root
         self.notes = []
         self.add_triad(triad_type)
-        print(self.notes)
 
         for key, value in kwargs.items():
             if key=='extensions':
-                print('made it')
                 self.add_extensions(value)
 
 
@@ -57,9 +56,9 @@ class Chord:
         print(self.notes)
 
     def add_triad(self,triad_type):
-        global TriadTable
+        global TRIADTABLE
         try:
-            intervals = [entry[1] for entry in TriadTable if entry[0]==triad_type][0]
+            intervals = [entry[1] for entry in TRIADTABLE if entry[0]==triad_type][0]
         except:
             print("error occured")
             intervals = []
@@ -70,10 +69,10 @@ class Chord:
             self.notes.append(self.TwelveTET[n])
 
     def add_extensions(self,extensions):
-        global ExtensionTable
+        global EXTENSIONTABLE
 
         try:
-            intervals = [entry[1] for entry in ExtensionTable if entry[0] in extensions]
+            intervals = [entry[1] for entry in EXTENSIONTABLE if entry[0] in extensions]
         except:
             print("error occured")
             intervals = []
@@ -89,7 +88,7 @@ class Scale:
         global TwelveTET
         TwelveTET+=TwelveTET
         try:
-            intervals = [entry[1] for entry in ScaleTable if entry[0]==name][0]
+            intervals = [entry[1] for entry in SCALETABLE if entry[0]==name][0]
         except:
             print("error occured")
             return
@@ -106,4 +105,3 @@ class Scale:
         for interval in intervals:
             n+=interval
             self.notes.append(TwelveTET[n])
-        print(self.notes)

@@ -24,7 +24,7 @@ class Guitar:
     def assign_fret_markers(self,frets):
         self.fret_markers = []
         for i in range(frets):
-            print(i)
+
             if i in [12,24]:
                 self.fret_markers.append("oo")
             elif i in [3,5,7,9,15,17,19,21]:
