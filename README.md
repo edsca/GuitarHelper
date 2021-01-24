@@ -1,6 +1,6 @@
 # GuitarHelper
 A set of tools to help in learning the guitar/bass
-
+Intended to help visualise relationships between notes and reasoning behind chord shapes.
 
 ## current functionality 
 
