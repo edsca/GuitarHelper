@@ -10,13 +10,18 @@ SCALETABLE = [
     ("Minor Pentatonic", [3,2,2,3])
 ]
 
-TRIADTABLE = [
+CHORDTYPETABLE = [
     ("Major", [4,3]),
-    ("Augmented",[4,4]),
     ("Minor",[3,4]),
     ("Diminished",[3,3]),
     ("Suspended 4", [5,2]),
-    ("Suspended 2", [2,5])
+    ("Suspended 2", [2,5]),
+    ("Major 7th", [4,3,4]),
+    ("Minor 7th", [3,4,3]),
+    ("Dominant 7th", [4,3,3]),
+    ("Augmented",[4,4]),
+    ("Dominant 9th",[4,3,3,4]),
+    ("Major 11th",[4,3,4,3,3]),
 ]
 
 EXTENSIONTABLE = [
@@ -32,9 +37,6 @@ EXTENSIONTABLE = [
     ("b13",8),
     ("6",9),
     ("13",9),
-    ("dim7",9),
-    ("7", 10),
-    ("M7", 11)
 ]
 
 
@@ -56,9 +58,9 @@ class Chord:
         print(self.notes)
 
     def add_triad(self,triad_type):
-        global TRIADTABLE
+        global CHORDTYPETABLE
         try:
-            intervals = [entry[1] for entry in TRIADTABLE if entry[0]==triad_type][0]
+            intervals = [entry[1] for entry in CHORDTYPETABLE if entry[0]==triad_type][0]
         except:
             print("error occured")
             intervals = []

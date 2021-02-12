@@ -2,7 +2,7 @@
 A set of tools to help in learning the guitar/bass
 
 
-## current functionality 
+## current functionality
 
 * interactive-ish fretboard that highlights notes
 * extensible support for displaying some chords and scales
@@ -14,4 +14,5 @@ A set of tools to help in learning the guitar/bass
 * music theory hints (requires me to know anything about that)
 * audio output -link sounds to fretboard
 * code improvements (boring)
+* front page or settings to set tuning/number of strings etc.
 * ...

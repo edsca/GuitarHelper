@@ -101,7 +101,7 @@ class ChordOptions(GridLayout):
         self.root = TextInput(text='Root Note')
         #self.triadType = TextInput(text='Scale Type')
         self.triadDropDown = DropDown()
-        for triad in TRIADTABLE:
+        for triad in CHORDTYPETABLE:
             btn = Button(text=triad[0])
             btn.size_hint_y = None
             btn.height = 44
