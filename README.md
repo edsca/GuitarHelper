@@ -14,5 +14,4 @@ Intended to help visualise relationships between notes and reasoning behind chor
 * music theory hints (requires me to know anything about that)
 * audio output -link sounds to fretboard
 * code improvements (boring)
-* front page or settings to set tuning/number of strings etc.
 * ...
