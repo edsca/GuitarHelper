@@ -9,6 +9,7 @@ from kivy.uix.label import Label
 from kivy.uix.dropdown import DropDown
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.screenmanager import ScreenManager, Screen
 
 noteButtons = []
 def highlight(notes):
@@ -26,11 +27,12 @@ def highlight(notes):
 
 class GuitarScreen(GridLayout):
     def __init__(self,**kwargs):
+        self.frets = kwargs.pop('frets')
+        self.strings=kwargs.pop('strings')
+        self.lefty = kwargs.pop('lefty')
         super(GuitarScreen,self).__init__(**kwargs)
 
-        self.frets = 24
-        self.strings=[('E',3),('A',4),('D',4),('G',4),('B',5),('E',5)]
-        self.lefty = True
+
         global noteButtons
         if self.lefty:
             order = -1
@@ -130,20 +132,97 @@ class ChordOptions(GridLayout):
 
 class Main(GridLayout):
     def __init__(self,**kwargs):
+        self.frets = kwargs.pop('frets')
+        self.strings=kwargs.pop('strings')
+        self.lefty = kwargs.pop('lefty')
         super(Main,self).__init__(**kwargs)
         self.cols=1
         self.rows=4
         self.add_widget(Label(text="Guitar Helper Tool"))
-        self.add_widget(GuitarScreen())
+        self.add_widget(GuitarScreen(frets=self.frets,strings=self.strings,lefty=self.lefty))
         self.add_widget(ScaleOptions())
         self.add_widget(ChordOptions())
 
+class InitOptions(GridLayout):
+    def __init__(self,**kwargs):
+        super(InitOptions,self).__init__(**kwargs)
+        self.cols=3
+        self.rows=2
+        self.add_widget(Label(text='Number of frets'))
+        self.add_widget(Label(text='Tuning'))
+        self.add_widget(Label(text='Left Handed?'))
+
+        self.fretDropDown = DropDown()
+        for scaleLength in SCALELENGTHTABLE:
+            btn = Button(text=scaleLength)
+            btn.size_hint_y = None
+            btn.height = 44
+            btn.bind(on_release=lambda btn: self.fretDropDown.select(btn.text))
+            self.fretDropDown.add_widget(btn)
+        self.frets = Button(text='24')
+        self.frets.bind(on_release=self.fretDropDown.open)
+        self.fretDropDown.bind(on_select=lambda instance, x: setattr(self.frets, 'text', x))
+
+        self.tuningDropDown = DropDown()
+        for tuning in TUNINGTABLE:
+            btn = Button(text=tuning[0])
+            btn.size_hint_y = None
+            btn.height = 44
+            btn.bind(on_release=lambda btn: self.tuningDropDown.select(btn.text))
+            self.tuningDropDown.add_widget(btn)
+        self.tunings = Button(text='Standard')
+        self.tunings.bind(on_release=self.tuningDropDown.open)
+        self.tuningDropDown.bind(on_select=lambda instance, x: setattr(self.tunings, 'text', x))
+
+
+        self.add_widget(self.frets)
+        self.add_widget(self.tunings)
+        self.add_widget(TextInput(text='Left Handed'))
+
+class Landing(GridLayout):
+    def __init__(self,**kwargs):
+        super(Landing,self).__init__(**kwargs)
+        self.cols=1
+        self.rows=3
+        self.add_widget(Label(text="Landing Page"))
+        self.add_widget(InitOptions())
+
+        self.bt = Button(text='Load Screen')
+        self.bt.bind(on_press=self.callback)
+        self.add_widget(self.bt)
+
+    def callback(self,dt):
+        print(int(self.children[1].children[2].text))
+        print([entry[1] for entry in TUNINGTABLE if entry[0]==self.children[1].children[1].text][0])
+        try:
+            frets_in = int(self.children[1].children[2].text)
+            strings_in=list([entry[1] for entry in TUNINGTABLE if entry[0]==self.children[1].children[1].text][0]) #horrible code that gets tuning info
+            lefty_in = True
+            keywords = {'frets':frets_in,'strings':strings_in,'lefty':lefty_in}
+
+            mn = Screen(name='Main')
+            main = Main(frets=frets_in,strings=strings_in,lefty=lefty_in)
+            mn.add_widget(main)
+        except:
+            print('error: please check whether frets and strings are correctly selected')
+
+
+        self.parent.parent.add_widget(mn)
+        self.parent.parent.current = 'Main'
 
 class MyApp(App):
     #set up guitar
+    sm = ScreenManager()
+
+    ld = Screen(name='Landing')
+    ld.add_widget(Landing())
+
+
+    sm.add_widget(ld)
+
 
     def build(self):
-        return Main()
+        return self.sm
 
 
 if __name__ == '__main__':
