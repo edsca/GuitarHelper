@@ -19,7 +19,8 @@ SCALETABLE = [
     ("Major",[2,2,1,2,2,2]),
     ("Blues",[3,2,1,1,3]),
     ("Natural Minor", [2,1,2,2,1,2]),
-    ("Minor Pentatonic", [3,2,2,3])
+    ("Minor Pentatonic", [3,2,2,3]),
+    ("Major Pentatonic", [2,2,3,2]),
 ]
 
 CHORDTYPETABLE = [
@@ -30,6 +31,7 @@ CHORDTYPETABLE = [
     ("Suspended 2", [2,5]),
     ("Major 7th", [4,3,4]),
     ("Minor 7th", [3,4,3]),
+    ("Minor 7th Flat 5", [3,3,4]),
     ("Dominant 7th", [4,3,3]),
     ("Augmented",[4,4]),
     ("Dominant 9th",[4,3,3,4]),
