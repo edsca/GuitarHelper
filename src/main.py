@@ -34,7 +34,9 @@ class GuitarScreen(GridLayout):
 
 
         global noteButtons
-        if self.lefty:
+        print(self.lefty)
+        print(ORIENTATIONTABLE[0])
+        if self.lefty==ORIENTATIONTABLE[0]:
             order = -1
         else:
             order = 1
@@ -150,7 +152,7 @@ class InitOptions(GridLayout):
         self.rows=2
         self.add_widget(Label(text='Number of frets'))
         self.add_widget(Label(text='Tuning'))
-        self.add_widget(Label(text='Left Handed?'))
+        self.add_widget(Label(text='Orientation'))
 
         self.fretDropDown = DropDown()
         for scaleLength in SCALELENGTHTABLE:
@@ -174,10 +176,20 @@ class InitOptions(GridLayout):
         self.tunings.bind(on_release=self.tuningDropDown.open)
         self.tuningDropDown.bind(on_select=lambda instance, x: setattr(self.tunings, 'text', x))
 
+        self.orientationDropDown = DropDown()
+        for orientation in ORIENTATIONTABLE:
+            btn = Button(text=orientation)
+            btn.size_hint_y = None
+            btn.height = 44
+            btn.bind(on_release=lambda btn: self.orientationDropDown.select(btn.text))
+            self.orientationDropDown.add_widget(btn)
+        self.orientations = Button(text='LEFT HANDED')
+        self.orientations.bind(on_release=self.orientationDropDown.open)
+        self.orientationDropDown.bind(on_select=lambda instance, x: setattr(self.orientations,'text',x))   
 
         self.add_widget(self.frets)
         self.add_widget(self.tunings)
-        self.add_widget(TextInput(text='Left Handed'))
+        self.add_widget(self.orientations)
 
 class Landing(GridLayout):
     def __init__(self,**kwargs):
@@ -192,13 +204,14 @@ class Landing(GridLayout):
         self.add_widget(self.bt)
 
     def callback(self,dt):
-        print(int(self.children[1].children[2].text))
-        print([entry[1] for entry in TUNINGTABLE if entry[0]==self.children[1].children[1].text][0])
+        #print(int(self.children[1].children[2].text))
+        #print([entry[1] for entry in TUNINGTABLE if entry[0]==self.children[1].children[1].text][0])
         try:
+            print(self.children[1].children[0].text)
             frets_in = int(self.children[1].children[2].text)
             strings_in=list([entry[1] for entry in TUNINGTABLE if entry[0]==self.children[1].children[1].text][0]) #horrible code that gets tuning info
-            lefty_in = True
-            keywords = {'frets':frets_in,'strings':strings_in,'lefty':lefty_in}
+            lefty_in = self.children[1].children[0].text
+           
 
             mn = Screen(name='Main')
             main = Main(frets=frets_in,strings=strings_in,lefty=lefty_in)

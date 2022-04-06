@@ -14,6 +14,11 @@ TUNINGTABLE = [
     ("Standard Bass",[('E',3),('A',4),('D',4),('G',4)])
 ]
 
+ORIENTATIONTABLE = [
+    "LEFT HANDED",
+    "RIGHT HANDED"
+]
+
 SCALETABLE = [
     ("Root",[]),
     ("Major",[2,2,1,2,2,2]),
