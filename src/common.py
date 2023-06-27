@@ -29,18 +29,18 @@ SCALETABLE = [
 ]
 
 CHORDTYPETABLE = [
-    ("Major", [4,3]),
-    ("Minor",[3,4]),
-    ("Diminished",[3,3]),
-    ("Suspended 4", [5,2]),
-    ("Suspended 2", [2,5]),
-    ("Major 7th", [4,3,4]),
-    ("Minor 7th", [3,4,3]),
-    ("Minor 7th Flat 5", [3,3,4]),
-    ("Dominant 7th", [4,3,3]),
-    ("Augmented",[4,4]),
-    ("Dominant 9th",[4,3,3,4]),
-    ("Major 11th",[4,3,4,3,3]),
+    ("M", [4,3]),
+    ("m",[3,4]),
+    ("dim",[3,3]),
+    ("sus4", [5,2]),
+    ("sus2", [2,5]),
+    ("M7", [4,3,4]),
+    ("m7", [3,4,3]),
+    ("m7b5", [3,3,4]),
+    ("7", [4,3,3]),
+    ("aug",[4,4]),
+    ("9",[4,3,3,4]),
+    ("M11",[4,3,4,3,3]),
 ]
 
 EXTENSIONTABLE = [
@@ -67,10 +67,14 @@ class Chord:
         self.root = root
         self.notes = []
         self.add_triad(triad_type)
+        self.name = root+triad_type
+        print(self.name)
 
         for key, value in kwargs.items():
             if key=='extensions':
                 self.add_extensions(value)
+                self.name=self.name+"".join(value)
+
 
 
 

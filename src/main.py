@@ -1,3 +1,4 @@
+from xml.etree.ElementTree import tostring
 from guitar import Guitar
 from common import *
 
@@ -23,6 +24,47 @@ def highlight(notes):
         for i in range(len(notes)):
             if notes[i] == nB.text:
                 nB.color = [1-nums[i],0.5,1,0.5*(1+nums[i])]
+
+
+class ChordProgressionOptions(GridLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.cols=5
+        self.rows=1
+        self.clearProg = Button(text="Clear")
+        self.clearProg.bind(on_press=self.clearProgCallback)
+        self.chordPrev = Button(text="<<")
+        self.chord = Label(text="CURRENT")
+        self.chordNext = Button(text=">>")
+        self.scroll    = Button(text="Scroll")
+        self.add_widget(self.clearProg)
+        self.add_widget(self.chordPrev)
+        self.add_widget(self.chord)
+        self.add_widget(self.chordNext)
+        self.add_widget(self.scroll)
+        
+        
+    def clearProgCallback(self,dt):
+        print(self.parent.children)
+        chordProg = self.parent.children[1]
+        chordProg.text=""
+
+
+
+class ChordProgressionScreen(GridLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.chordProg = []
+
+        self.cols=1
+        self.rows=3
+        self.root=Label(text='Chord Progression')
+        self.progText = TextInput(text="")
+        self.progOptions = ChordProgressionOptions()
+        self.add_widget(self.root)
+        self.add_widget(self.progText)
+        self.add_widget(self.progOptions)
+        
 
 
 class GuitarScreen(GridLayout):
@@ -100,7 +142,7 @@ class ScaleOptions(GridLayout):
 class ChordOptions(GridLayout):
     def __init__(self,**kwargs):
         super(ChordOptions,self).__init__(**kwargs)
-        self.cols=4
+        self.cols=5
         self.rows=1
         self.root = TextInput(text='Root Note')
         #self.triadType = TextInput(text='Scale Type')
@@ -115,22 +157,35 @@ class ChordOptions(GridLayout):
         self.triadType.bind(on_release=self.triadDropDown.open)
         self.triadDropDown.bind(on_select=lambda instance, x: setattr(self.triadType, 'text', x))
 
-        self.extensions = TextInput(text='Extensions')
+        self.extensions = TextInput(text='')
 
 
         self.loadButton = Button(text='Show Chord')
+        self.loadButton.bind(on_press=self.loadCallback)
 
-        self.loadButton.bind(on_press=self.callback)
+        self.addToProgButton = Button(text='Add to Progression')
+        self.addToProgButton.bind(on_press=self.addToProgression)
+
         self.add_widget(self.root)
         self.add_widget(self.triadType)
         self.add_widget(self.extensions)
         self.add_widget(self.loadButton)
+        self.add_widget(self.addToProgButton)
+        
 
-    def callback(self,dt):
+    def loadCallback(self,dt):
+        self.chord = Chord(self.root.text,self.triadType.text,extensions=self.extensions.text.split(','))
+        highlight(self.chord.notes)
+        progScreen = self.parent.children[3] # TODO find a better way of linking between widgets
+        label = progScreen.children[2]
+        label.text = self.chord.name
 
-        chord = Chord(self.root.text,self.triadType.text,extensions=self.extensions.text.split(','))
-
-        highlight(chord.notes)
+        
+    def addToProgression(self,dt):
+        self.loadCallback(dt)
+        progScreen = self.parent.children[3] # TODO find a better way of linking between widgets
+        chordProg= progScreen.children[1]
+        chordProg.text = chordProg.text+self.chord.name+","
 
 class Main(GridLayout):
     def __init__(self,**kwargs):
@@ -139,8 +194,9 @@ class Main(GridLayout):
         self.lefty = kwargs.pop('lefty')
         super(Main,self).__init__(**kwargs)
         self.cols=1
-        self.rows=4
+        self.rows=5
         self.add_widget(Label(text="Guitar Helper Tool"))
+        self.add_widget(ChordProgressionScreen())
         self.add_widget(GuitarScreen(frets=self.frets,strings=self.strings,lefty=self.lefty))
         self.add_widget(ScaleOptions())
         self.add_widget(ChordOptions())
